@@ -1,20 +1,74 @@
-// lab2.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+// // --------------------------------------------
+// // proggram without reccursion
+
+// #include <iostream>
+// #include <cmath>
+// using namespace std;
+
+// double taylor_sin(double x, int n) {
+//     double term = x;
+//     double sum = x;
+
+//     for (int i = 1; i <= n; ++i) {
+//         term *= -x * x / (2 * i * (2 * i + 1));
+//         sum += term;
+//     }
+
+//     return sum;
+// }
+
+// int main() {
+//     double x = 4;
+//     // cout << "Enter value for x: ";
+//     // cin >> x;
+
+//     int n = 10; //Ammount of Teylor`s items
+
+//     double sin_x1 = taylor_sin(x + 1, n);
+//     // double sin_x1 = sin(x);
+//     double sin_x3 = taylor_sin(x + 3, n);
+
+//     double y = sin_x1 / (sin_x3 * sin_x3);
+
+//     cout << "Result(y): " << y << endl;
+//     cout << "Sin(x): " << sin(x) << endl;
+//     cout<< "Sum: "<< taylor_sin(x, n) << endl; 
+
+//     return 0;
+// }
+
+//--------------------------------------------
+//proggram with reccursion
+
 
 #include <iostream>
+#include <cmath>
+using namespace std;
 
-int main()
-{
-    std::cout << "Hello World!\n";
+double taylor_sin_recursive(double x, int n, int term = 1) {
+    if (n == 0) {
+        return 0;
+    }
+
+    double next_term = -x * x / (2 * term * (2 * term + 1));
+    return x + next_term * taylor_sin_recursive(x, n - 1, term + 1);
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+int main() {
+    double x = 4;
+    // cout << "Enter value for x: ";
+    // cin >> x;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+    int n = 10; //Ammount of Teylor`s items
+
+    double sin_x1 = taylor_sin_recursive(x + 1, n);
+    double sin_x3 = taylor_sin_recursive(x + 3, n);
+
+    double y = sin_x1 / (sin_x3 * sin_x3);
+
+    cout << "Result: " << y << endl;
+    cout << "Sin(x): " << sin(x) << endl;
+    cout << "Sum: " << taylor_sin_recursive(x, n) << endl;
+
+    return 0;
+}
