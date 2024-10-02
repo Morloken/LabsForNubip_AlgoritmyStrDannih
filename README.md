@@ -1,1 +1,1 @@
-# LabsForNubip_AlgoritmyStrDannih-FromVS-
+# LabsForNubip_AlgoritmyStrDannih
