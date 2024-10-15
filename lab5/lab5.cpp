@@ -145,11 +145,19 @@ void fillBestCase(vector<int>& arr) {
  * Заповнює масив з відсортованими елементами у зворотному порядку
  * (від n-1 до 0).
  */
+//void fillWorstCase(vector<int>& arr) {
+//    for (int i = 0; i < arr.size(); i++) {
+//        arr[i] = arr.size() - i;
+//        //arr[i] = n - i - 1;
+//
+//    }
+//}
 void fillWorstCase(vector<int>& arr) {
     for (int i = 0; i < arr.size(); i++) {
-        arr[i] = arr.size() - i;
+        arr[i] = arr.size() - i - 1;  // від n-1 до 0
     }
 }
+
 
 /**
  * Функція для заповнення масиву випадковими значеннями.
@@ -197,9 +205,9 @@ int main() {
     SetConsoleCP(1251);
 
     srand(time(0));
-    const int sizes[] = { 1000, 10000, 20000 };  // Розміри масивів для тестування
+    const int sizes[] = { 10, 100, 200 };  // Розміри масивів для тестування
 
-    for (int n : sizes) {
+    for (int n : sizes) {//перебирання елементів масиву не зважаючи на індекси
         vector<int> arr(n);
 
         // Таблиця для Bubble Sort
@@ -269,11 +277,148 @@ int main() {
     return 0;
 }
 
-// Оптимізована функція швидкого сортування (QuickSort) з використанням вставок для малих підмасивів
-// Використання рекурсії для меншого підмасиву, а ітерації — для більшого
 
-// Функція для заповнення масиву у найкращому випадку (вже відсортований)
-
-// Функція для заповнення масиву у найгіршому випадку (відсортований у зворотному порядку)
-
-// Функція для заповнення масиву випадковими значеннями
+//=============================================================================================================================================================================================================================================
+//#include <iostream>
+//#include <vector>
+//#include <ctime>
+//#include <cstdlib>
+//#include <iomanip>
+//#include <windows.h>
+//
+//using namespace std;
+//
+//// Функції для підрахунку порівнянь та обмінів
+//int bubbleSort(vector<int>& arr, int& comparisons, int& swaps) {
+//    int n = arr.size();
+//    comparisons = swaps = 0;
+//    bool swapped;
+//    for (int i = 0; i < n - 1; i++) {
+//        swapped = false;
+//        for (int j = 0; j < n - i - 1; j++) {
+//            comparisons++; // Кожне порівняння
+//            if (arr[j] > arr[j + 1]) {
+//                swap(arr[j], arr[j + 1]);
+//                swaps++; // Кожен обмін
+//                swapped = true; // Відбувся обмін
+//            }
+//        }
+//        if (!swapped) {
+//            break; // Якщо обмінів не було, завершити достроково
+//        }
+//    }
+//    return swaps;
+//}
+//
+//int partition(vector<int>& arr, int low, int high, int& comparisons, int& swaps) {
+//    int pivot = arr[high];
+//    int i = low - 1;
+//
+//    for (int j = low; j < high; j++) {
+//        comparisons++; // Кожне порівняння
+//        if (arr[j] < pivot) {
+//            i++;
+//            swap(arr[i], arr[j]);
+//            swaps++; // Кожен обмін
+//        }
+//    }
+//    swap(arr[i + 1], arr[high]);
+//    swaps++; // Обмін з опорним елементом
+//    return (i + 1);
+//}
+//
+//void quickSort(vector<int>& arr, int low, int high, int& comparisons, int& swaps) {
+//    if (low < high) {
+//        int pi = partition(arr, low, high, comparisons, swaps);
+//        quickSort(arr, low, pi - 1, comparisons, swaps);
+//        quickSort(arr, pi + 1, high, comparisons, swaps);
+//    }
+//}
+//
+//void shellSort(vector<int>& arr, int& comparisons, int& swaps) {
+//    int n = arr.size();
+//    comparisons = swaps = 0;
+//    for (int gap = n / 2; gap > 0; gap /= 2) {
+//        for (int i = gap; i < n; i++) {
+//            int temp = arr[i];
+//            int j;
+//            comparisons++; // Порівняння для входу в цикл
+//            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+//                comparisons++; // Кожне порівняння всередині циклу
+//                arr[j] = arr[j - gap];
+//                swaps++; // Обмін елементів
+//            }
+//            arr[j] = temp;
+//            swaps++; // Обмін елементів при виході
+//        }
+//    }
+//}
+//
+//// Функція для заповнення масиву
+//void fillArray(vector<int>& arr, int type) {
+//    int n = arr.size();
+//    if (type == 1) { // Відсортований за зростанням (найкращий випадок)
+//        for (int i = 0; i < n; i++) {
+//            arr[i] = i;
+//        }
+//    }
+//    else if (type == 2) { // Випадковий масив (середній випадок)
+//        srand(time(0));
+//        for (int i = 0; i < n; i++) {
+//            arr[i] = rand() % 1000;
+//        }
+//    }
+//    else if (type == 3) { // Відсортований за спаданням (найгірший випадок)
+//        for (int i = 0; i < n; i++) {
+//            arr[i] = n - i;
+//        }
+//    }
+//}
+//
+//// Функція для виведення таблиці
+//void printResults(int n, const string& caseType, int bubbleComp, int bubbleSwap, int quickComp, int quickSwap, int shellComp, int shellSwap) {
+//    cout << setw(10) << n << setw(15) << caseType
+//        << setw(15) << bubbleComp << setw(10) << bubbleSwap
+//        << setw(15) << quickComp << setw(10) << quickSwap
+//        << setw(15) << shellComp << setw(10) << shellSwap << endl;
+//}
+//
+//int main() {
+//    SetConsoleOutputCP(1251);
+//    SetConsoleCP(1251);
+//
+//    vector<int> arr;
+//    int n[] = { 1000, 10000, 100000 }; // Масив розмірностей
+//
+//    cout << setw(10) << "N" << setw(15) << "Випадок" << setw(15) << "Bubble Comp" << setw(10) << "Bubble Swap"
+//        << setw(15) << "Quick Comp" << setw(10) << "Quick Swap"
+//        << setw(15) << "Shell Comp" << setw(10) << "Shell Swap" << endl;
+//
+//    for (int i = 0; i < 3; i++) { // Перебір для трьох розмірностей
+//        for (int type = 1; type <= 3; type++) {
+//            arr.resize(n[i]);
+//            fillArray(arr, type);
+//
+//            // Bubble Sort
+//            vector<int> arr1 = arr;
+//            int bubbleComp, bubbleSwap;
+//            bubbleSort(arr1, bubbleComp, bubbleSwap);
+//
+//            // Quick Sort
+//            vector<int> arr2 = arr;
+//            int quickComp = 0, quickSwap = 0;
+//            quickSort(arr2, 0, n[i] - 1, quickComp, quickSwap);
+//
+//            // Shell Sort
+//            vector<int> arr3 = arr;
+//            int shellComp, shellSwap;
+//            shellSort(arr3, shellComp, shellSwap);
+//
+//            // Виведення результатів
+//            string caseType = (type == 1) ? "Найкращий" : (type == 2) ? "Середній" : "Найгірший";
+//            printResults(n[i], caseType, bubbleComp, bubbleSwap, quickComp, quickSwap, shellComp, shellSwap);
+//        }
+//    }
+//
+//    return 0;
+//}
