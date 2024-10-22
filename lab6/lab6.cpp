@@ -9,6 +9,7 @@
 #include <ctime>    //  time()
 #include <windows.h>
 #include <locale> // Для роботи з локалями
+#include <cctype>
 
 using namespace std;
 
