@@ -8,10 +8,12 @@
 #include <cstdlib>  //  rand() та srand()
 #include <ctime>    //  time()
 #include <windows.h>
+#include <locale> // Для роботи з локалями
 
 using namespace std;
 
 int main() {
+    setlocale(LC_ALL, ""); // Встановлення локалі на основі поточного середовища (для підтримки кирилиці)
 
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
