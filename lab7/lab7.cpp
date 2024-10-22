@@ -15,6 +15,8 @@
 #include <string>
 #include <windows.h>
 #include <cctype> // Для функції isalpha
+#include <locale> // Для роботи з локалями
+
 
 
 using namespace std;
@@ -23,8 +25,8 @@ using namespace std;
 struct Node {
     string term; // Термін
     string explanation;  // Пояснення
-    Node * next; // Вказівник на наступний елемент
-    Node * prev; // Вказівник на попередній елемент
+    Node * next; // Вказівник на наступний елемент у списку
+    Node * prev; // Вказівник на попередній елемент списку
 };
 
 // Функція для створення нового вузла
@@ -63,7 +65,7 @@ Node * createNode(const string & term, const string & explanation) {
 
 
 // Функція для додавання нового елемента в кінець списку ======================================     (1)
-void append(Node * & head, const string & term, const string & explanation) {
+void static append(Node * & head, const string & term, const string & explanation) {
     Node * newNode = createNode(term, explanation);
     if (!head) {
         head = newNode;
@@ -90,7 +92,7 @@ void append(Node * & head, const string & term, const string & explanation) {
 
 
 // Функція для виведення пояснення для заданого терміну =================================================   (2)
-void printExplanation(Node * head, const string& term) {
+void static printExplanation(Node * head, const string& term) {
     Node * temp = head;
     while (temp) {
         if (temp->term == term) {
@@ -116,7 +118,7 @@ void printExplanation(Node * head, const string& term) {
 
 
 // Функція для виведення всіх термінів у списку ========================================================   (3)
-void printAllTerms(Node * head) {
+void static printAllTerms(Node * head) {
     Node * temp = head;
     if (!temp) {
         cout << "Список термінів порожній.\n";
@@ -146,7 +148,7 @@ void printAllTerms(Node * head) {
 
 
 // Функція для видалення терміну і пояснення з двонаправленого списку =======================================     (4)
-void deleteTerm(Node * & head, const string & term) {
+void static deleteTerm(Node * & head, const string & term) {
     if (!head) {
         cout << "Список порожній, видаляти нічого.\n";
         return;
@@ -197,8 +199,14 @@ void deleteTerm(Node * & head, const string & term) {
 //....................................................................................Checking for the input correction
 // Валідація введеного терміну
 bool static isValidTerm(const string & term) {
+    setlocale(LC_ALL, ""); // Встановлення локалі на основі поточного середовища (для підтримки кирилиці)
+
     for (char c : term) {
-        if (!isalpha(c)) { // Перевіряю, чи всі символи є літерами
+        
+        if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || 
+            (c >= 'А' && c <= 'Я') || (c >= 'а' && c <= 'я') ||  
+            (c == 'Є' || c == 'є' || c == 'І' || c == 'і' || c == 'Ї' || c == 'ї' || c == 'Ґ' || c == 'ґ')) 
+            ||  (isdigit(c)) || (c == ' ')) {
             return false;
         }
     }
@@ -216,7 +224,12 @@ bool static isValidExplanation(const string & explanation) {
 
 // Головне меню =======================================================================             MENU
 void static menu(Node * & head) {
-    int choice;//варіант вибору функції з менюшки
+
+    string choiceInput; // Замість int використовується рядок для введення
+    //(перевірка на те, чи є цифрою введений користувачем вибір)
+
+
+    int choice = -1;//варіант вибору функції з менюшки
     string term, explanation;
 
     do {
@@ -232,8 +245,21 @@ void static menu(Node * & head) {
         cout << "\t--------------------\n";
         cout << "0. \t       Вийти\n";
         cout << "Ваш вибір: ";
-        cin >> choice;
-        cin.ignore(); // Для коректного введення строк після числового вибору
+
+
+        getline(cin, choiceInput); // Введення рядковим форматом
+
+        // Перевірка, чи введене значення вибору користувача є цифрою
+        if (choiceInput.length() == 1 && isdigit(choiceInput[0])) {
+            choice = stoi(choiceInput); // Перетворення рядка на число
+        }
+        else {
+            cout << "Неправильний вибір, потрібно ввести цифру. Спробуйте ще раз.\n";
+            continue; // Повертаємося до початку циклу для повторного вибору
+        }
+
+
+
 
         switch (choice) {
         case 1:
@@ -309,7 +335,7 @@ int main() { //=================================================================
     SetConsoleCP(1251);
 
 
-    Node* head = nullptr;  // Початково список порожній
+    Node * head = nullptr;  // Початково список порожній
     /*head — це вказівник на перший елемент (вузол) списку.
     Він дає стартовий доступ до всіх елементів списку.*/
 
@@ -325,7 +351,8 @@ int main() { //=================================================================
 
 //========================================================================================================================       NOTES FOR CODE
 /*
-
+    //nullptr - ключове слово, яке представляє нульовий вказівник у сучасному C++.
+    // Воно введене в стандарті C++11 для заміни старого NULL
 
 
 */
