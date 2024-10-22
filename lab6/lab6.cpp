@@ -10,6 +10,7 @@
 #include <windows.h>
 #include <locale> // Для роботи з локалями
 #include <cctype>
+#include <string>
 
 using namespace std;
 
