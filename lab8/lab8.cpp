@@ -1,20 +1,118 @@
-// lab8.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+/*
+Створить власний стек та чергу та заповніть їх будь якими записами
+відповідно варіанту і виведіть на екран, лістинг програми
+додайте до звіту.
 
-#include <iostream>
+10. Аеропорт (рейси та кількість пасажирів) 
+Кількість записів - 10
 
-int main()
-{
-    std::cout << "Hello World!\n";
+
+
+
+*/
+
+
+
+#include <iostream>  
+#include <stack>     // для роботи зі стеком
+#include <queue>     // для роботи з чергою
+#include <string>    
+
+using namespace std; 
+
+//  структура Flight для зберігання даних про рейс
+struct Flight {
+    string flightNumber;  // зберігання номера рейсу
+    int passengers;       // кількість пасажирів
+
+    // Конструктор структури для ініціалізації об'єктів Flight
+    Flight(string number, int numPassengers) : flightNumber(number), passengers(numPassengers) {}  
+    // Ініціалізуємо поля за допомогою списку ініціалізації
+    // (Першим іде Номер рейсу, другим - Кількість пасажирів)
+};//----------------------------------------------------
+
+
+
+
+
+void displayStack(stack<Flight> flights) {// виведення вмісту стека на екран
+    // Поки стек не порожній, виконуємо цикл
+    while (!flights.empty()) {
+        Flight flight = flights.top();  // Отримуємо верхній елемент стека
+        cout << "Flight: " << flight.flightNumber << ", Passengers: " << flight.passengers << endl;  // Виводимо номер рейсу та кількість пасажирів
+        flights.pop();  // Видаляємо верхній елемент стека після виводу
+    }
+}//-----------------------------------------------------
+
+
+
+
+
+void displayQueue(queue<Flight> flights) {//виведення вмісту черги на екран
+    // Поки черга не порожня, виконуємо цикл
+    while (!flights.empty()) {
+        Flight flight = flights.front();  // Отримуємо передній елемент черги
+        cout << "Flight: " << flight.flightNumber << ", Passengers: " << flight.passengers << endl;  // Виводимо номер рейсу та кількість пасажирів
+        flights.pop();  // Видалення переднього елементу черги після виводу
+    }
+}//-----------------------------------------------------
+
+
+
+
+
+
+int main() {//=====================================================================      MAIN
+    stack<Flight> flightStack;  // Оголошую стек для об'єктів типу Flight
+    queue<Flight> flightQueue;  // Оголошую ще чергу для об'єктів типу Flight
+
+    // Заповнення стеку і черги - 10 записами
+    for (int i = 1; i <= 10; i++) {  
+        string flightNumber = "Flight_" + to_string(i); 
+        // Формую номер рейсу як Flight_1, Flight_2 і т.д.
+        //TO_STRING - Перетворення типу з Числа в Рядок
+        int passengers = i * 10;  // Встановлюю кільк. пасажирів (наприклад, 10, 20, 30 і т.д.)
+
+        Flight flight(flightNumber, passengers);
+        // Створення об'єкт Flight з номером рейсу та кількістю пасажирів у ньому
+
+        flightStack.push(flight);  // Додаємо/Пушимо об'єкт у стек
+        flightQueue.push(flight);  // Пушим об'єкт у чергу
+    }
+
+    cout << "Stack contents:" << endl;  
+    displayStack(flightStack);//виведення всіх елементів стека
+
+    cout << "\nQueue contents:" << endl;
+    displayQueue(flightQueue);//а тут виведення всіх елементів черги
+
+    return 0; 
 }
+/*=============================================================================            NOTES
+            Cтек повертає записи в зворотному порядку додавання, 
+            а черга — у тому ж порядку, в якому елементи додавалися.
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+
+Стек (Stack) працює за принципом LIFO (Last In, First Out)
+— «останнім зайшов, першим вийшов».
+
+Коли ми додаємо елементи в стек, останній доданий елемент стає «верхнім» 
+і виводиться першим.
+
+У коді спочатку додається запис Flight_1, а потім Flight_2
+і так далі до Flight_10.
+
+Під час виведення ми завжди беремо «верхній» елемент стека за допомогою top(),
+тому спочатку виводиться останній доданий (Flight_10),
+потім Flight_9, Flight_8 і так далі до Flight_1.
+
+Черга (Queue) працює за принципом FIFO (First In, First Out)
+— «першим зайшов, першим вийшов».
+
+Коли ми додаємо елементи в чергу, вони стають у чергу один за одним.
+Під час виведення ми завжди беремо «передній» елемент черги за допомогою front().
+Тому вивід починається з першого доданого елемента
+Flight_1, потім Flight_2, і так далі до Flight_10.
+
+*/
