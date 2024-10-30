@@ -102,7 +102,7 @@ public:
         cout << "Потяги, які відправляються о " << time << ":" << endl;
         searchByTime(root, time);
     }
-};
+};//Class Train END
 
 // Функція для перевірки правильності введення станції призначення
 bool isValidDestination(const string& destination) {
