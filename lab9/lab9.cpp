@@ -13,18 +13,22 @@ struct Train {
     Train* left;   // Нащадок (ліворуч)
     Train* right;  // Нащадок (праворуч)
 
-    Train(string num, string dest, string time) : number(num), destination(dest), departureTime(time), left(nullptr), right(nullptr) {}
+    Train(string num, string dest, string time) : number(num), destination(dest),
+       departureTime(time), left(nullptr), right(nullptr) {}
 };
 
-class TrainTree {
+class TrainTree {//=====================================================================================          Class Train START
 private:
-    Train* root;
+    Train* root;//вказівник на кореневий елемент дерева.
+    //У початковий момент він дорівнює nullptr, тобто дерево порожнє
 
     void insert(Train*& node, string num, string dest, string time) {
         if (node == nullptr) {
+            //створення нового вузла
             node = new Train(num, dest, time);
         }
-        else if (num < node->number) {
+        else if (num < node->number) {//Якщо номер потяга num менший за номер 
+            //в поточному вузлі (node->number), функція викликається рекурсивно для піддерева лівого 
             insert(node->left, num, dest, time);
         }
         else {
@@ -35,10 +39,19 @@ private:
     void display(Train* node) {
         if (node != nullptr) {
             display(node->left);
-            cout << "Номер потяга: " << node->number << ", Станція призначення: " << node->destination << ", Час відправлення: " << node->departureTime << endl;
+            cout << "Номер потяга: " << node->number << ", Станція призначення: " <<
+                node->destination << ", Час відправлення: " << node->departureTime << endl;
             display(node->right);
         }
     }
+    /*
+    Виводить інформацію про всі потяги в дереві, використовуючи симетричний обхід (in-order traversal):
+    Рекурсивно обробляється ліве піддерево.
+    Виводиться інформація про поточний вузол.
+    Рекурсивно обробляється праве піддерево.
+    Таким чином, потяги виводяться у порядку зростання їхніх номерів
+    */
+
 
     Train* searchByNumber(Train* node, const string& num) {
         if (node == nullptr || node->number == num) {
@@ -51,14 +64,21 @@ private:
             return searchByNumber(node->right, num);
         }
     }
+    /*
+    Виконує пошук потяга за номером. Працює рекурсивно:
+        Якщо node == nullptr, значить потяг не знайдено.
+        Якщо номер поточного вузла збігається з num, повертається цей вузол.
+        Якщо num менше номера в поточному вузлі, рекурсія виконується для лівого піддерева.
+    Інакше, викликається для правого піддерева.
+    */
 
     void searchByDestination(Train* node, const string& dest) {
         if (node != nullptr) {
-            searchByDestination(node->left, dest);
+            searchByDestination(node->left, dest);//Рекурсивно обробляється ліве піддерево.
             if (node->destination == dest) {
                 cout << "Номер потяга: " << node->number << ", Час відправлення: " << node->departureTime << endl;
             }
-            searchByDestination(node->right, dest);
+            searchByDestination(node->right, dest);//обробляється праве піддерево.
         }
     }
 
@@ -73,13 +93,13 @@ private:
     }
 
 public:
-    TrainTree() : root(nullptr) {}
+    TrainTree() : root(nullptr) {}// ініціалізація рут елемента з значенням 0ля, показуючи що на початку дерево - пусте
 
-    void insert(string num, string dest, string time) {
+    void insert(string num, string dest, string time) {// додавання нового потяга
         insert(root, num, dest, time);
     }
 
-    void display() {
+    void display() {//вивести всю інформацію про потяги в дереві.
         display(root);
     }
 
@@ -102,7 +122,7 @@ public:
         cout << "Потяги, які відправляються о " << time << ":" << endl;
         searchByTime(root, time);
     }
-};//Class Train END
+};//=====================================================================================          Class Train END
 
 // Функція для перевірки правильності введення станції призначення
 bool isValidDestination(const string& destination) {
@@ -120,7 +140,7 @@ bool isValidTime(const string& time) {
     return true;
 }
 
-// Функція для перевірки правильності введення номера потяга
+// для перевірки правильності введення номера потяга
 bool isValidTrainNumber(const string& number) {
     for (char c : number) {
         if (!isdigit(c)) {
@@ -130,17 +150,18 @@ bool isValidTrainNumber(const string& number) {
     return true;
 }
 
-int main() {
+int main() {//======================================================                  MAIN
     setlocale(LC_ALL, "");
 
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
 
     TrainTree tree;
-    int n;
+    int n;//Кільк. потягів
 
     cout << "Введіть кількість потягів: ";
     cin >> n;
+
     cout << "\n----Запис інформації про потяги----\n";
     for (int i = 0; i < n; i++) {
         string number, destination, departureTime;
@@ -179,7 +200,7 @@ int main() {
     cout << "\n----Всі потяги----\n";
     tree.display();
 
-    int choice;
+    int choice;//вибір опції в меню
     do {
         cout << "\n----Меню----\n";
         cout << "1. Запитати станцію для виведення потягів.\n";
